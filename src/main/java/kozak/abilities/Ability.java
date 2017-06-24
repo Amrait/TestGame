@@ -14,6 +14,8 @@ public abstract class Ability {
     //аби окремі поля можна було змінювати по-своєму
     private List<Field> affectedFields;
 
+
+
     //Метод, який застосовує ло всіх цілей заданий ефект
     public abstract void apply(List<Character> targets);
 
@@ -24,4 +26,5 @@ public abstract class Ability {
     void setAffectedFields(List<Field> affectedFields) {
         this.affectedFields = affectedFields;
     }
+
 }

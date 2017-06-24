@@ -1,7 +1,10 @@
 package kozak;
 
 import kozak.abilities.Ability;
+import kozak.abilities.Effect;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Character {
@@ -9,9 +12,12 @@ public class Character {
     private double currentHealth;
     private double damageModifier;
     private String name;
-    private Set<Ability> abilities;
+    private List<Ability> abilities;
+    private List<Effect> effects;
 
-    public Character(){}
+    public Character(){
+        this.effects = new ArrayList<>();
+    }
 
     public double getMaxHealth() {
         return maxHealth;
@@ -45,16 +51,24 @@ public class Character {
         this.name = name;
     }
 
-    public Set<Ability> getAbilities() {
+    public List<Ability> getAbilities() {
         return abilities;
     }
 
-    public void setAbilities(Set<Ability> abilities) {
+    public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
     }
 
     @Override
     public String toString() {
         return name;
+    }
+
+    public List<Effect> getEffects() {
+        return effects;
+    }
+
+    public void setEffects(List<Effect> effects) {
+        this.effects = effects;
     }
 }
