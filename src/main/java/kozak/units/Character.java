@@ -1,11 +1,10 @@
-package kozak;
+package kozak.units;
 
 import kozak.abilities.Ability;
 import kozak.abilities.Effect;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Character {
     private double maxHealth;
@@ -16,7 +15,17 @@ public class Character {
     private List<Effect> effects;
 
     public Character(){
-        this.effects = new ArrayList<>();
+        this.abilities = new ArrayList<>(6);    //для економії пам'яті
+        this.effects = new ArrayList<>(6);
+    }
+
+    public Character(double _maxHealth, double _damageMod, String _name){
+        this.abilities = new ArrayList<>(6);
+        this.effects = new ArrayList<>(6);
+        this.name = _name;
+        this.maxHealth = _maxHealth;
+        this.currentHealth = maxHealth;
+        this.damageModifier = _damageMod;
     }
 
     public double getMaxHealth() {
@@ -70,5 +79,19 @@ public class Character {
 
     public void setEffects(List<Effect> effects) {
         this.effects = effects;
+    }
+
+    public void update(boolean hasActed) {
+        List<Effect> remainingEffects = new ArrayList<>(6);
+        for (Effect effect: effects
+             ) {
+            effect = effect.update(hasActed);
+            if (effect!=null) remainingEffects.add(effect);
+        }
+        effects = remainingEffects;
+    }
+
+    public boolean isAlive() {
+        return this.currentHealth>0;
     }
 }

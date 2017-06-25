@@ -1,6 +1,6 @@
 package kozak.abilities;
 
-import kozak.Character;
+import kozak.units.Character;
 import kozak.flags.AbilityType;
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -16,25 +16,21 @@ public class OverTimeAbility extends Ability {
 
     //Модифікатор задіяних полів
     private double modifier;
-    //
+    //Прапор, чи є дане вміння таким, ефекти якого по цілі можуть бути усунені
     private boolean isDismissible;
 
     //Тривалість ефекту. Для завдання це, як правило, 1 (1 хід команди), однак можливі варіації
     private int duration;
 
-    //Тип вміння. Дозволяє передавати цей флаг ефекту, який накладатиметься на ціль.
-    //Наявність цього флагу дозволяє:
-    //1. Знімати з цілі ефекти лише певного типу, як-от debuff/buff
-    //2. Блокувати у власника вмінь певні навички, наприклад, блокувати здатність накладати прокляття чи абощо
-    private AbilityType type = AbilityType.NOT_SPECIFIED;
-
     public OverTimeAbility(double _modifier, int _duration, boolean _isDismissible,
-                           AbilityType _type, List<Field> _affectedFields) {
+                           String _name, AbilityType _type, List<Field> _affectedFields)
+    {
         this.modifier = _modifier;
-        this.type = _type;
         this.duration = _duration;
-        super.setAffectedFields(_affectedFields);
         this.isDismissible = _isDismissible;
+        super.setName(_name);
+        super.setType(_type);
+        super.setAffectedFields(_affectedFields);
     }
 
     @Override
@@ -59,7 +55,7 @@ public class OverTimeAbility extends Ability {
                                 changes.put(field,value-(Double) PropertyUtils.getProperty(character, field.getName()));
                                 //створення самого ефекту. Задається власник ефекту та прапор, чи буде зроблено відкат
                                 //модифікованих параметрів.
-                                Effect effect = new Effect(character,this.isDismissible);
+                                Effect effect = new Effect(character,this.isDismissible,this.getType());
                                 //ініціалізація початкової тривалості
                                 effect.setTimeLeft(this.duration);
                                 //додання даних про зміни
@@ -81,6 +77,14 @@ public class OverTimeAbility extends Ability {
         }
     }
 
+    public boolean isDismissible() {
+        return isDismissible;
+    }
+
+    public void setDismissible(boolean dismissible) {
+        isDismissible = dismissible;
+    }
+
     public double getModifier() {
         return modifier;
     }
@@ -89,19 +93,27 @@ public class OverTimeAbility extends Ability {
         this.modifier = modifier;
     }
 
-    public AbilityType getType() {
-        return type;
-    }
-
-    public void setType(AbilityType type) {
-        this.type = type;
-    }
-
     public int getDuration() {
         return duration;
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public String printActionText(){
+        return "applied " + getType() + " effect.";
+    }
+    @Override
+    public String toString() {
+        return "OverTimeAbility{" +
+                "modifier=" + modifier +
+                ", isDismissible=" + isDismissible +
+                ", duration=" + duration +
+                ", type=" + super.getType() +
+                ", name=" + super.getName() +
+                ", affectedFields=" + getAffectedFields().toString() +
+                '}';
     }
 }

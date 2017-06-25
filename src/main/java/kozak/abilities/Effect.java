@@ -1,6 +1,7 @@
 package kozak.abilities;
 
-import kozak.Character;
+import kozak.flags.AbilityType;
+import kozak.units.Character;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Field;
@@ -12,25 +13,27 @@ public class Effect {
     private int timeLeft;
     private boolean isDismissible;
     private Map<Field,Double> changeValues;
+    private AbilityType type = AbilityType.NOT_SPECIFIED;
 
-    public Effect(Character _owner, boolean _isDismissable){
-        this.isDismissible = _isDismissable;
+    public Effect(Character _owner, boolean _isDismissible, AbilityType _type){
+        this.isDismissible = _isDismissible;
         this.owner = _owner;
+        this.type = _type;
     }
-    //Метод повертає Effect з тих міркувань, що в межах Dismiss() не буде змоги
+    //Метод повертає Effect з тих міркувань, що в межах dismiss() не буде змоги
     //видалити неактивний ефект з набору діючих ефектів, тому перевірка буде здійснюватись
-    //на рівні Character.Update() і вже потім будуть видалятись недійсні ефекти
-    public Effect Update(boolean acted){
+    //на рівні Character.update() і вже потім будуть видалятись недійсні ефекти
+    public Effect update(boolean acted){
         if (acted){
             this.timeLeft--;
             if (this.timeLeft>0) return this;
             else {
-                this.Dismiss();
+                this.dismiss();
                 return null;
             }
         } else return this;
     }
-    private void Dismiss() {
+    private void dismiss() {
         if (isDismissible) {
             for (Field field : owner.getClass().getDeclaredFields()) {
                 if (changeValues.containsKey(field)) {
@@ -65,5 +68,9 @@ public class Effect {
 
     public void setChangeValues(Map<Field, Double> changeValues) {
         this.changeValues = changeValues;
+    }
+
+    public AbilityType getType() {
+        return type;
     }
 }
