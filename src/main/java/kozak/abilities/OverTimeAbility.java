@@ -18,7 +18,6 @@ public class OverTimeAbility extends Ability {
     private double modifier;
     //Прапор, чи є дане вміння таким, ефекти якого по цілі можуть бути усунені
     private boolean isDismissible;
-
     //Тривалість ефекту. Для завдання це, як правило, 1 (1 хід команди), однак можливі варіації
     private int duration;
 
@@ -103,7 +102,7 @@ public class OverTimeAbility extends Ability {
 
     @Override
     public String printActionText(){
-        return "applied " + getType() + " effect.";
+        return "applied " + getType() + " effect. ";
     }
     @Override
     public String toString() {

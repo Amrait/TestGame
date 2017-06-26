@@ -15,6 +15,7 @@ public class AttackAbility extends Ability {
     private Character user;
 
 
+
     public AttackAbility(double _damage, String _name, Character _user,List<Field> _affectedFields){
         this.damage = _damage;
         this.user = _user;
@@ -56,7 +57,7 @@ public class AttackAbility extends Ability {
     }
     @Override
     public String printActionText(){
-        return "delivered " + damage*user.getDamageModifier() + " damage.";
+        return "delivered " + damage*user.getDamageModifier() + " damage. ";
     }
     @Override
     public String toString() {

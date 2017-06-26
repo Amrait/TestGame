@@ -31,6 +31,6 @@ public class RemoveEffectAbility extends Ability{
     public String printActionText(){
         return "applied " + super.getType()
                 + " effect, removing all "
-                + targetType + " from target.";
+                + targetType + " from target. ";
     }
 }
